@@ -25,24 +25,49 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
+/**
+ * The Class StartActivity which is the activity that is started when the user
+ * opens the application.
+ */
 public class StartActivity extends MapActivity {
+
+	/** The map over lays. */
 	private List<Overlay> mapOverLays;
+
+	/** The projection. */
 	private Projection projection;
+
+	/** The map view. */
 	MapView mapView;
+
+	/** The map controller. */
 	MapController mapC;
+
+	/** The geopoint. */
 	GeoPoint p;
+
+	/** The location name. */
 	String locationName;
+
+	/** The points. */
 	private List<Coordinate> points = new ArrayList<Coordinate>();
 
+	/*
+	 * Prevents activity from restarting on configuration change
+	 */
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
 
+	/*
+	 * Called when activity is first created
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		//load the coordinates to draw
 		loadPoints();
 
 		mapView = (MapView) findViewById(R.id.maps);
@@ -53,22 +78,43 @@ public class StartActivity extends MapActivity {
 		mapOverLays.add(new MyOverlay());
 		mapC = mapView.getController();
 
+		// The point to use to set as the center of the map
 		p = new GeoPoint((int) (40.847061 * 1E6), (int) (-98.384768 * 1E6));
 		try {
+			//animates map to center
 			mapC.animateTo(p);
+			//sets the zoom level of the map
 			mapC.setZoom(5);
 		} catch (Exception e) {
 			Log.d("exc", String.valueOf(e));
 		}
 	}
 
+	/*
+	 * Is route displayed
+	 * @return 
+	 */
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
 
+	/**
+	 * The Class MapsOverlay.
+	 */
 	class MapsOverlay extends com.google.android.maps.Overlay {
 
+		/*
+		 * The draw method 
+		 * @param canvas
+		 *				the canvas
+		 * @param mapv
+		 *				the mapview
+		 * @param shadow
+		 *				the shadow
+		 * @param when
+		 * 				when to draw
+		 */
 		public boolean draw(Canvas canvas, MapView mapview, boolean shadow,
 				long when) {
 			super.draw(canvas, mapview, shadow);
@@ -83,16 +129,32 @@ public class StartActivity extends MapActivity {
 		}
 	}
 
+	/**
+	 * The Class MyOverlay.
+	 */
 	class MyOverlay extends Overlay {
-		// private Projection proj;
+		/**
+		 * Instantiates a new my overlay.
+		 */
 		public MyOverlay() {
 		}
 
+		/*
+		 * This method is where the drawing actually occurs.  
+		 * @param canvas
+		 *				the canvas
+		 * @param mapv
+		 *				the mapview
+		 * @param shadow
+		 *				the shadow
+		 * 
+		 */
 		public void draw(Canvas canvas, MapView mapv, boolean shadow) {
 			if (!shadow) {
 				super.draw(canvas, mapv, shadow);
 			}
 
+			//Set the properties for the paint object
 			Paint mPaint = new Paint();
 			mPaint.setDither(true);
 			mPaint.setColor(Color.RED);
@@ -102,7 +164,13 @@ public class StartActivity extends MapActivity {
 			mPaint.setStrokeWidth(4);
 			Path path = new Path();
 
+			//Loop through the points for drawing
+			//Because we work with two points (i and i+1),
+			//we loop while i < points - 1.
 			for (int i = 0; i < points.size() - 1; i++) {
+				//Checks to see if the point is zero, if it is
+				//we will skip it and draw the next points.  This allows
+				//breaks in the lines we are drawing
 				if ((points.get(i + 1).getLatitude()) != 0) {
 					GeoPoint gP1 = new GeoPoint((int) (points.get(i)
 							.getLatitude() * 1E6), (int) (points.get(i)
@@ -128,6 +196,9 @@ public class StartActivity extends MapActivity {
 		}
 	}
 
+	/**
+	 * Loads the coordinates that we are going to draw.
+	 */
 	private void loadPoints() {
 		points.add(new Coordinate(-118.817375, 38.168270));
 		points.add(new Coordinate(-116.092766, 43.484035));
@@ -183,17 +254,22 @@ public class StartActivity extends MapActivity {
 		points.add(new Coordinate(-81.259247, 38.603161));
 	}
 
-	// Menu Creation
+	/*
+	 * Creates the options menu
+	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, 2, 0, "ChangeView");
 		return true;
 	}
 
-	// When meniItem clicked
+	/*
+	 * When the menu item is clicked
+	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		final MapController mc = mapView.getController();
 		switch (item.getItemId()) {
 		case 2:
+			//Generate a new dialog box to switch map views
 			AlertDialog dialog = new AlertDialog.Builder(StartActivity.this)
 					.setItems(R.array.selectMapView,
 							new DialogInterface.OnClickListener() {
