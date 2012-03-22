@@ -52,7 +52,7 @@ public class StartActivity extends MapActivity {
 	/** The points. */
 	private List<Coordinate> points = new ArrayList<Coordinate>();
 
-	/*
+	/**
 	 * Prevents activity from restarting on configuration change
 	 */
 	@Override
@@ -60,7 +60,7 @@ public class StartActivity extends MapActivity {
 		super.onConfigurationChanged(newConfig);
 	}
 
-	/*
+	/**
 	 * Called when activity is first created
 	 */
 	@Override
@@ -90,7 +90,7 @@ public class StartActivity extends MapActivity {
 		}
 	}
 
-	/*
+	/**
 	 * Is route displayed
 	 * @return 
 	 */
@@ -104,7 +104,7 @@ public class StartActivity extends MapActivity {
 	 */
 	class MapsOverlay extends com.google.android.maps.Overlay {
 
-		/*
+		/**
 		 * The draw method 
 		 * @param canvas
 		 *				the canvas
@@ -139,7 +139,7 @@ public class StartActivity extends MapActivity {
 		public MyOverlay() {
 		}
 
-		/*
+		/**
 		 * This method is where the drawing actually occurs.  
 		 * @param canvas
 		 *				the canvas
@@ -254,7 +254,7 @@ public class StartActivity extends MapActivity {
 		points.add(new Coordinate(-81.259247, 38.603161));
 	}
 
-	/*
+	/**
 	 * Creates the options menu
 	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -262,7 +262,7 @@ public class StartActivity extends MapActivity {
 		return true;
 	}
 
-	/*
+	/**
 	 * When the menu item is clicked
 	 */
 	public boolean onOptionsItemSelected(MenuItem item) {

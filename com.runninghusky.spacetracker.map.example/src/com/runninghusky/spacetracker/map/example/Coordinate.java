@@ -69,7 +69,7 @@ public class Coordinate {
 		this.latitude = lat;
 	}
 
-	/*
+	/**
 	 * Overrides the toString method
 	 */
 	@Override
